@@ -21,6 +21,11 @@ impl ClampCast<u16> for usize {
     }
 }
 
+impl ClampCast<u8> for u16 {
+    fn clamp_cast(self) -> u8 {
+        self.clamp(u16::MIN, u8::MAX.into()) as u8
+    }
+}
 impl ClampCast<usize> for isize {
     #[allow(clippy::cast_sign_loss, clippy::cast_possible_wrap)]
     fn clamp_cast(self) -> usize {
