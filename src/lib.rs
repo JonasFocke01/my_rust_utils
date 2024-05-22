@@ -1,4 +1,4 @@
 #![no_std]
 
-mod clamp_cast;
-mod map_range;
+pub mod clamp_cast;
+pub mod map_range;
