@@ -139,3 +139,38 @@ impl MapRange<u8> for usize {
         }
     }
 }
+
+impl MapRange<u16> for u8 {
+    fn map_range_from_to(self, from: (Self, Self), to: (u16, u16)) -> u16 {
+        if self.check_aggainst_boundaries(from, to) {
+            to.0 + (u16::from(self) - u16::from(from.0)) * (to.1 - to.0)
+                / u16::from(from.1 - from.0)
+        } else {
+            self.into()
+        }
+    }
+    fn map_range_from(self, from: (u8, u8)) -> u16 {
+        if self.check_aggainst_boundaries(from, (u16::MIN, u16::MAX)) {
+            u16::MAX + u16::from(self - from.0) * (u16::MAX - u16::MIN) / u16::from(from.1 - from.0)
+        } else {
+            self.into()
+        }
+    }
+    fn map_range_to(self, to: (u16, u16)) -> u16 {
+        if self.check_aggainst_boundaries((Self::MIN, Self::MAX), to) {
+            to.0 + (u16::from(self) - u16::from(u8::MAX)) * (to.1 - to.0)
+                / u16::from(Self::MAX - Self::MIN)
+        } else {
+            self.into()
+        }
+    }
+    fn map_range(self) -> u16 {
+        if self.check_aggainst_boundaries((Self::MIN, Self::MAX), (u16::MIN, u16::MAX)) {
+            u16::MAX
+                + (u16::from(self) - u16::from(Self::MIN)) * (u16::MAX - u16::MIN)
+                    / u16::from(Self::MAX - Self::MIN)
+        } else {
+            self.into()
+        }
+    }
+}
